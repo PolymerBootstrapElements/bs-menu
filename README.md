@@ -1,6 +1,6 @@
 # bs-menu
 
-[![Build Status](https://travis-ci.org/PolymerBootstrapElements/bs-button.svg?branch=master)](https://travis-ci.org/PolymerBootstrapElements/bs-button)
+[![Build Status](https://travis-ci.org/PolymerBootstrapElements/bs-menu.svg?branch=master)](https://travis-ci.org/PolymerBootstrapElements/bs-menu)
 
 Bootstrap styled menu using Polymer Elements.
 
