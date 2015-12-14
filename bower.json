@@ -1,0 +1,36 @@
+{
+  "name": "bs-menu",
+  "version": "0.0.1",
+  "description": "Bootstrap styled menu using Polymer Elements.",
+  "authors": [
+    "Gregory Ghez <gregory.ghez@gmail.com>"
+  ],
+  "keywords": [
+    "web-components",
+    "web-component",
+    "polymer",
+    "menu",
+    "bootstrap",
+    "twitter"
+  ],
+  "main": [
+    "bs-menu.html"
+  ],
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/PolymerBootstrapElements/bs-menu.git"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/PolymerBootstrapElements/bs-menu",
+  "ignore": [],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.1.0",
+    "bootstrap": "~3.3.6"
+  },
+  "devDependencies": {
+    "web-component-tester": "Polymer/web-component-tester#^3.3.0",
+    "iron-component-page": "polymerelements/iron-component-page#~1.1.2",
+    "bs-grid": "polymerbootstrapelements/bs-grid"
+  }
+}
