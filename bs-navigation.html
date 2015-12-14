@@ -1,0 +1,51 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="bs-menu-item.html">
+
+<!--
+Handle a set of menu links at menu top level.
+
+See bs-menu for example or demo page.
+
+@demo
+-->
+<dom-module id="bs-navigation">
+
+    <template>
+        <ul class$="nav navbar-nav {{_pull}}">
+            <template is="dom-repeat" items="{{items}}">
+                <bs-menu-item text="{{item.text}}"
+                              url="{{item.url}}"
+                              items="{{item.items}}"></bs-menu-item>
+            </template>
+            <content></content>
+        </ul>
+    </template>
+
+    <script>
+        Polymer({
+            is: 'bs-navigation',
+            properties: {
+                /**
+                 * Specifies how to align navigation container in menu bar ('left' or 'right').
+                 */
+                pull: {
+                    type: String,
+                    observer: '_pullChanged'
+                },
+                /**
+                 * Defines items displayed in current navigation bloc.
+                 */
+                items: Array
+            },
+            _pullChanged: function () {
+                if (this.pull == 'right') {
+                    this._pull = 'navbar-right';
+                } else if (this.pull == 'left') {
+                    this._pull = 'navbar-left';
+                }
+            }
+        });
+    </script>
+
+</dom-module>
+

@@ -18,14 +18,58 @@
 <body>
 
 <!-- test DOM -->
-
+<bs-menu id="defaultMenu"></bs-menu>
+<bs-menu id="inverseMenu" inverse></bs-menu>
+<bs-menu id="fluidMenu" fluid></bs-menu>
+<bs-menu id="brandedMenu" brand='{"name":"My brand","url":"http://brand.com"}'></bs-menu>
 <!-- test -->
 
 <script>
     suite('<bs-menu>', function () {
 
+        test('default menu has .container inner element.', function () {
+            var menu = document.getElementById('defaultMenu');
 
+            var container = menu.querySelector('nav.navbar > bs-container');
+            expect([].slice.call(container.classList)).to.not.include('container-fluid');
+            expect([].slice.call(container.classList)).to.include('container');
+        });
 
+        test('default menu has navbar-default css class.', function () {
+            var menu = document.getElementById('defaultMenu');
+            var navbar = menu.querySelector('nav.navbar');
+
+            expect([].slice.call(navbar.classList)).to.include('navbar-default');
+            expect([].slice.call(navbar.classList)).to.not.include('navbar-inverse');
+
+            var container = menu.querySelector('nav.navbar > bs-container');
+            expect([].slice.call(container.classList)).to.not.include('container-fluid');
+            expect([].slice.call(container.classList)).to.include('container');
+        });
+
+        test('inverse menu has navbar-inverse css class.', function () {
+            var menu = document.getElementById('inverseMenu');
+            var navbar = menu.querySelector('nav.navbar');
+
+            expect([].slice.call(navbar.classList)).to.include('navbar-inverse');
+            expect([].slice.call(navbar.classList)).to.not.include('navbar-default');
+        });
+
+        test('fluid menu has .container-fluid inner element.', function () {
+            var menu = document.getElementById('fluidMenu');
+
+            var container = menu.querySelector('nav.navbar > bs-container');
+            expect([].slice.call(container.classList)).to.include('container-fluid');
+            expect([].slice.call(container.classList)).to.not.include('container');
+        });
+
+        test('branded menu displays correct values', function () {
+            var menu = document.getElementById('brandedMenu');
+            var brandLink = menu.querySelector('a.navbar-brand');
+
+            expect(brandLink.textContent).to.be.eql('My brand');
+            expect(brandLink.getAttribute('href')).to.be.eql('http://brand.com');
+        });
     });
 </script>
 </body>

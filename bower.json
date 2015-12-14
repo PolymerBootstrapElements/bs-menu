@@ -26,11 +26,13 @@
   "ignore": [],
   "dependencies": {
     "polymer": "Polymer/polymer#^1.1.0",
-    "bootstrap": "~3.3.6"
+    "bootstrap": "~3.3.6",
+    "bs-grid": "polymerbootstrapelements/bs-grid",
+    "bs-button": "polymerbootstrapelements/bs-button"
   },
   "devDependencies": {
-    "web-component-tester": "Polymer/web-component-tester#^3.3.0",
-    "iron-component-page": "polymerelements/iron-component-page#~1.1.2",
+    "web-component-tester": "Polymer/web-component-tester",
+    "iron-component-page": "polymerelements/iron-component-page",
     "bs-grid": "polymerbootstrapelements/bs-grid"
   }
 }

@@ -1,12 +1,23 @@
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../bs-grid/bs-container.html">
+<link rel="import" href="../bs-button/bs-button.html">
 
+<link rel="import" href="bs-navigation.html">
+<link rel="import" href="bs-menu-item.html">
 <!--
 HTML menu using Bootstrap style.
 
 Example:
 
-    <bs-menu>
-
+    <bs-menu inverse brand-name="Test" brand-link="../test/">
+        <bs-navigation pull="right">
+            <bs-menu-item active text="Current item" url="#/first"></bs-menu-item>
+            <bs-menu-item text="Dropdown">
+                <bs-menu-item text="Item 1" url="#/item-1"></bs-menu-item>
+                <bs-menu-item text="Item 2" url="#/item-2"></bs-menu-item>
+                <bs-menu-item text="Item 3" url="#/item-3"></bs-menu-item>
+            </bs-menu-item>
+        </bs-navigation>
     </bs-menu>
 
 @demo
@@ -14,23 +25,75 @@ Example:
 <dom-module id="bs-menu">
 
     <template>
-        <!-- Style definition inside template due to recommendation:
-        https://www.polymer-project.org/1.0/docs/devguide/styling.html
-            => "Note: Prior to Polymer 1.1, the recommendation was to place <style> tags inside the <dom-module> for an element (but outside the <template>). This is still supported, but is no longer recommended."
-        -->
-        <style>
 
-        </style>
+        <nav class$="navbar {{_style}}">
+            <bs-container fluid="{{fluid}}">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <bs-button class="navbar-toggle collapsed"
+                               data-toggle="collapse"
+                               data-target="#bs-menu-navbar-collapse"
+                               aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </bs-button>
+                    <a class="navbar-brand" href$="{{brandPath}}">{{brandName}}</a>
+                </div>
 
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-menu-navbar-collapse">
+                    <template is="dom-repeat" items="{{navs}}" as="nav">
+                        <bs-navigation pull="{{nav.pull}}" items="{{nav.items}}"></bs-navigation>
+                    </template>
 
+                    <!-- Add inlined bs-navigation blocs here -->
+                    <content></content>
+                </div>
+            </bs-container>
+        </nav>
 
     </template>
 
     <script>
         Polymer({
-            is: 'bs-menu'
-
-
+            is: 'bs-menu',
+            properties: {
+                /**
+                 * Indicates whether menu style should have inverted colors.
+                 */
+                inverse: {
+                    type: Boolean,
+                    value: false,
+                    observer: '_inverseChanged'
+                },
+                /**
+                 * Indicates whether menu content should use fluid or default container.
+                 */
+                fluid: Boolean,
+                /**
+                 * Defines the brand text for this menu.
+                 */
+                brandName: String,
+                /**
+                 * Defines the link used when user click on brand text.
+                 */
+                brandUrl: String,
+                /**
+                 * Defines an array of navigation blocs to bind to this menu.
+                 */
+                navs: Array
+            },
+            _inverseChanged: function () {
+                if (this.inverse) {
+                    this.$$('nav.navbar').classList.remove('navbar-default');
+                    this.$$('nav.navbar').classList.add('navbar-inverse');
+                } else {
+                    this.$$('nav.navbar').classList.remove('navbar-inverse');
+                    this.$$('nav.navbar').classList.add('navbar-default');
+                }
+            }
         });
     </script>
 

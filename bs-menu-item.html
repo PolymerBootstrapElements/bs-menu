@@ -1,0 +1,100 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+A menu item used inside bs-navigation container or sub-menu.
+
+See bs-menu for example or demo page.
+
+@demo
+-->
+<dom-module id="bs-menu-item">
+
+    <template>
+        <li class$="{{_active}} {{_dropdown}}">
+            <a id="mainLink" href$="{{url}}">{{text}}
+                <template is="dom-if" if="{{active}}">
+                    <span class="sr-only">(current)</span>
+                </template>
+            </a>
+            <template is="dom-if" if="{{hasItems()}}">
+                <ul class="dropdown-menu">
+                    <template is="dom-repeat" items="{{items}}">
+                        <!-- Allow only one hierarchical level -->
+                        <bs-menu-item text="{{item.text}}" url="{{item.url}}"></bs-menu-item>
+                    </template>
+                    <content></content>
+                </ul>
+            </template>
+        </li>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+               aria-expanded="false">Dropdown <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#">Separated link</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#">One more separated link</a></li>
+            </ul>
+        </li>
+    </template>
+
+    <script>
+        Polymer({
+            is: 'bs-menu-item',
+            properties: {
+                /**
+                 * Indicates whether item is currently highlighted.
+                 */
+                active: {
+                    type: Boolean,
+                    observer: '_activeChanged'
+                },
+                /**
+                 * Defines the text displayed by this item.
+                 */
+                text: String,
+                /**
+                 * Defines items accessible as a sub-menu when clicking on current item.
+                 */
+                items: Array,
+                /**
+                 * Defines the link used when user click on current item.
+                 */
+                url: {
+                    type: String,
+                    value: 'javascript:void(0);'
+                }
+            },
+            observers: [
+                '_itemsChanged(items)'
+            ],
+            _activeChanged: function () {
+                this._active = this.active && 'active';
+            },
+            _itemsChanged: function () {
+                if (this.items && this.items.length) {
+                    this._dropdown = 'dropdown';
+                    this.$.mainLink.className='dropdown-toggle';
+                    this.$.mainLink.setAttribute('data-toggle', 'dropdown');
+                    this.$.mainLink.setAttribute('role', 'button');
+                    this.$.mainLink.setAttribute('aria-haspopup', 'true');
+                    this.$.mainLink.setAttribute('aria-expanded', 'false');
+                } else {
+                    this._dropdown = '';
+                    this.$.mainLink.className='';
+                    this.$.mainLink.removeAttribute('data-toggle');
+                    this.$.mainLink.removeAttribute('role');
+                    this.$.mainLink.removeAttribute('aria-haspopup');
+                    this.$.mainLink.removeAttribute('aria-expanded');
+                }
+            },
+            hasItems: function () {
+                return this.items && this.items.length;
+            }
+        });
+    </script>
+
+</dom-module>
