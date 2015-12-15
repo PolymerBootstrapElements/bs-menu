@@ -17,8 +17,8 @@ See bs-menu for example or demo page.
                               url="{{item.url}}"
                               items="{{item.items}}"></bs-menu-item>
             </template>
-            <content></content>
         </ul>
+        <content hidden></content>
     </template>
 
     <script>
@@ -43,6 +43,15 @@ See bs-menu for example or demo page.
                 } else if (this.pull == 'left') {
                     this._pull = 'navbar-left';
                 }
+            },
+            attached: function () {
+                var items = this.querySelectorAll('bs-menu-item > li');
+                var navContainer = this.$$('.navbar-nav');
+                console.log(items, navContainer);
+
+                Array.prototype.slice.call(items).forEach(function (item) {
+                    navContainer.appendChild(item);
+                });
             }
         });
     </script>

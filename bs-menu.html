@@ -3,7 +3,7 @@
 <link rel="import" href="../bs-button/bs-button.html">
 
 <link rel="import" href="bs-navigation.html">
-<link rel="import" href="bs-menu-item.html">
+
 <!--
 HTML menu using Bootstrap style.
 
@@ -49,11 +49,12 @@ Example:
                     </template>
 
                     <!-- Add inlined bs-navigation blocs here -->
-                    <content></content>
+
                 </div>
             </bs-container>
         </nav>
 
+        <content hidden id="content"></content>
     </template>
 
     <script>
@@ -93,6 +94,13 @@ Example:
                     this.$$('nav.navbar').classList.remove('navbar-inverse');
                     this.$$('nav.navbar').classList.add('navbar-default');
                 }
+            },
+            attached: function () {
+                var navs = this.querySelectorAll('.navbar-nav, .navbar-form');
+                var navContainer = this.$$('#bs-menu-navbar-collapse');
+                Array.prototype.slice.call(navs).forEach(function (nav) {
+                    navContainer.appendChild(nav);
+                });
             }
         });
     </script>
