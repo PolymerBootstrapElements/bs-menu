@@ -16,16 +16,13 @@ See bs-menu for example or demo page.
                     <span class="sr-only">(current)</span>
                 </template>
             </a>
-            <template is="dom-if" if="{{hasItems()}}">
-                <ul class="dropdown-menu">
-                    <template is="dom-repeat" items="{{items}}">
-                        <!-- Allow only one hierarchical level -->
-                        <bs-menu-item text="{{item.text}}" url="{{item.url}}"></bs-menu-item>
-                    </template>
-                    <content></content>
-                </ul>
-            </template>
+
+            <ul class="dropdown-menu" hidden="{{!hasItems()}}">
+                <content id="content"></content>
+            </ul>
         </li>
+
+
     </template>
 
     <script>
@@ -44,13 +41,6 @@ See bs-menu for example or demo page.
                  */
                 text: String,
                 /**
-                 * Defines items accessible as a sub-menu when clicking on current item.
-                 */
-                items: {
-                    type: Array,
-                    observer: '_itemsChanged'
-                },
-                /**
                  * Defines the link used when user click on current item.
                  */
                 url: {
@@ -61,17 +51,17 @@ See bs-menu for example or demo page.
             _activeChanged: function () {
                 this._active = this.active && 'active';
             },
-            _itemsChanged: function () {
-                if (this.items && this.items.length) {
+            _setupDropdown: function () {
+                if (this.hasItems()) {
                     this._dropdown = 'dropdown';
-                    this.$.mainLink.className='dropdown-toggle';
+                    this.$.mainLink.className = 'dropdown-toggle';
                     this.$.mainLink.setAttribute('data-toggle', 'dropdown');
                     this.$.mainLink.setAttribute('role', 'button');
                     this.$.mainLink.setAttribute('aria-haspopup', 'true');
                     this.$.mainLink.setAttribute('aria-expanded', 'false');
                 } else {
                     this._dropdown = '';
-                    this.$.mainLink.className='';
+                    this.$.mainLink.className = '';
                     this.$.mainLink.removeAttribute('data-toggle');
                     this.$.mainLink.removeAttribute('role');
                     this.$.mainLink.removeAttribute('aria-haspopup');
@@ -79,7 +69,19 @@ See bs-menu for example or demo page.
                 }
             },
             hasItems: function () {
-                return this.items && this.items.length;
+                return Polymer.dom(this.$.content).getDistributedNodes().length;
+            },
+            attached: function () {
+                var _this=this;
+                this._setupDropdown();
+
+                Polymer.dom(this.$.content).getDistributedNodes().filter(function(e){
+                    return e.nodeName == 'BS-MENU-ITEM';
+                }).map(function(e){
+                    return e.firstChild;
+                }).forEach(function(e){
+                    _this.$$('ul.dropdown-menu').appendChild(e);
+                });
             }
         });
     </script>

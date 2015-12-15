@@ -12,13 +12,8 @@ See bs-menu for example or demo page.
 
     <template>
         <ul class$="nav navbar-nav {{_pull}}">
-            <template is="dom-repeat" items="{{items}}">
-                <bs-menu-item text="{{item.text}}"
-                              url="{{item.url}}"
-                              items="{{item.items}}"></bs-menu-item>
-            </template>
+            <content id="content"></content>
         </ul>
-        <content hidden></content>
     </template>
 
     <script>
@@ -31,11 +26,7 @@ See bs-menu for example or demo page.
                 pull: {
                     type: String,
                     observer: '_pullChanged'
-                },
-                /**
-                 * Defines items displayed in current navigation bloc.
-                 */
-                items: Array
+                }
             },
             _pullChanged: function () {
                 if (this.pull == 'right') {
@@ -45,13 +36,16 @@ See bs-menu for example or demo page.
                 }
             },
             attached: function () {
-                var items = this.querySelectorAll('bs-menu-item > li');
-                var navContainer = this.$$('.navbar-nav');
-                console.log(items, navContainer);
+                var _this=this;
 
-                Array.prototype.slice.call(items).forEach(function (item) {
-                    navContainer.appendChild(item);
+                Polymer.dom(this.$.content).getDistributedNodes().filter(function(e){
+                    return e.nodeName == 'BS-MENU-ITEM';
+                }).map(function(e){
+                    return e.querySelector('li');
+                }).forEach(function(e){
+                    _this.$$('ul.navbar-nav').appendChild(e);
                 });
+
             }
         });
     </script>
